@@ -11,8 +11,7 @@
         <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
         <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" type="text/css">
-                                    
-        <link href="../common/lib/backgrid/backgrid.min.css" rel="stylesheet" type="text/css">
+		<link href="http://cdnjs.cloudflare.com/ajax/libs/backgrid.js/0.2.6/backgrid.min.css" rel="stylesheet" type="text/css">
 		
 		<link href="auction.css" rel="stylesheet" type="text/css">
                         
@@ -56,10 +55,11 @@
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js" type="text/javascript"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js" type="text/javascript"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js" type="text/javascript"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/URI.js/1.11.2/URI.min.js" type="text/javascript"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/backgrid.js/0.2.6/backgrid.min.js" type="text/javascript"></script>
 
 <script src="../common/js/httpconstants.js" type="text/javascript"></script>
-<script src="../common/lib/uri/URI.js" type="text/javascript"></script>
-<script src="../common/lib/backgrid/backgrid.min.js" type="text/javascript"></script>
 
 <script>
 	
@@ -113,14 +113,13 @@ var grid = new Backgrid.Grid({
 $("#item-results").append(grid.render().$el);
 
 var Data = Backbone.Model.extend({
-  url: "http://172.16.100.28:8080/liveauction/event?qxh=bex&uxa=1"
+  url: URI("https://localhost:8080/liveauction/event").addQuery(PARAM_ACTION, ACTION_ITEMLIST).addQuery(PARAM_AUCTIONUID, "1")
 });
 
 var data = new Data();
 
 data.fetch({
-	error: function (data) {
-	},
+	dataType: 'jsonp',
 	success: function (data) {
 		items.add(data.get("items"));
 	}
