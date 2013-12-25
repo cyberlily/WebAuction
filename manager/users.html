@@ -114,13 +114,12 @@ var grid = new Backgrid.Grid({
 $("#item-results").append(grid.render().$el);
 
 var Data = Backbone.Model.extend({
-  url: URI("http://localhost:8080/liveauction/event").addQuery(PARAM_ACTION, ACTION_USERLIST).addQuery(PARAM_AUCTIONUID, "1")
+  url: URI(API_URL + '/event').addQuery(PARAM_ACTION, ACTION_USERLIST).addQuery(PARAM_AUCTIONUID, "1")
 });
 
 var data = new Data();
 
 data.fetch({
-	dataType: 'jsonp',
 	success: function (data) {
 		users.add(data.get("users"));
 	}

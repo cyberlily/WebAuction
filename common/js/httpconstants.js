@@ -1,3 +1,6 @@
+var API_URL = "http://localhost:8080/liveauction";
+var WEBSOCKET_URL = "ws://localhost:8080/liveauction/notify";
+
 var API_APPKEY = "dia";
 var API_SIGNATURE = "lwe";
 var API_TIMESTAMP = "wtj";

@@ -14,8 +14,6 @@
 
 	<link href="../common/lib/gritter/jquery.gritter.css" rel="stylesheet" type="text/css">
 
-	<link rel="icon" type="image/png" href="..common/img/favicon.png"/>
-
 	<style type="text/css">
 		#raised {
 			-webit-style:none;
@@ -58,12 +56,6 @@
 		}
 		#raised::-webkit-meter-optimum-value {
 			background:#134A6F;
-		}
-		.logo {
-			float: left;
-			height: 16px;
-			padding: 2px 0 0 2px;
-			width: 16px;
 		}
 		.money {
 			color:#216C2A;
@@ -125,19 +117,15 @@
 			</div>
       	</div>
 	</div>
-	<hr>
-	<div id="footer">
-		<img src="../common/img/logo.png" class="logo"/><span>mobiaware.&copy; All Rights Reserved 2010</span>
-	</div>
 
 	<script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
 	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/URI.js/1.11.2/URI.min.js" type="text/javascript"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.3.2/accounting.js" type="text/javascript"></script>
 
 	<script src="../common/lib/gritter/jquery.gritter.min.js" type="text/javascript"></script>
-	<script src="../common/js/format.currency.js" type="text/javascript"></script>
 	<script src="../common/js/httpconstants.js" type="text/javascript"></script>
-	<script src="../common/lib/uri/URI.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
 		var min_item = 0;
@@ -147,19 +135,20 @@
 				
 		function refreshdiv(div) {
 			var seconds = Math.floor(Math.random() * (max_refresh - min_refresh + 1)) + min_refresh;
-			var item = Math.floor(Math.random() * (max_item - min_item + 1)) + min_item;
+			var item = Math.floor(Math.random() * (max_item - min_item + 1)) + min_item;		
 			
 			$(function () {
 	        	$.ajax({
 	        		type: 'GET',
-	        		url: URI('http://localhost:8080/liveauction/event').addQuery(PARAM_ACTION, ACTION_ITEMLIST).addQuery(PARAM_AUCTIONUID, '1').addQuery(PARAM_START, item).addQuery(PARAM_LENGTH, 1),
+	        		url: URI(API_URL + '/event').addQuery(PARAM_ACTION, ACTION_ITEMLIST).addQuery(PARAM_AUCTIONUID, '1').addQuery(PARAM_START, item).addQuery(PARAM_LENGTH, 1),
 	        		contentType: 'application/json; charset=utf-8',
-					dataType : 'jsonp',
-					jsonp : 'callback',
 	        		success: function (msg) {
 						var items = msg.items;
+						
+						max_item = msg.total; // update total for randomness
+						
 						for (var i = 0; i < items.length; i++) {
-							document.getElementById(div).innerHTML = '<h2>' + items[i].name + '</h2><h4>Item# ' + items[i].itemNumber + '</h4><h4 class="money">' + numberToCurrency(items[i].curPrice) + '</h4><p>' + items[i].description + '</p>';
+							document.getElementById(div).innerHTML = '<h2>' + items[i].name + '</h2><h4>Item# ' + items[i].itemNumber + '</h4><h4 class="money">' + accounting.formatMoney(items[i].curPrice) + '</h4><p>' + items[i].description + '</p>';
 						}
 	        		}
 	    		});
@@ -167,15 +156,15 @@
 	
 			setTimeout(function() { refreshdiv(div); }, seconds*1000);
 		}
-	
-		window.onload = function startrefresh(){
+		
+		$(document).ready(function() {
 			refreshdiv('summary1');
 			refreshdiv('summary2');
 			refreshdiv('summary3');
 			refreshdiv('summary4');
 			refreshdiv('summary5');
 			refreshdiv('summary6');
-		}
+		});
 	</script>
 	
 	<script type="text/javascript">
@@ -208,7 +197,7 @@
 				if (data) {
 					$.gritter.add({
 						title: 'Item #' + data.item.itemNumber,
-				        text: 'Bid price: ' + numberToCurrency(data.item.curPrice) + ' Total bids: ' + data.item.bidCount,
+				        text: 'Bid price: ' + accounting.formatMoney(data.item.curPrice) + ' Total bids: ' + data.item.bidCount,
 				       	image: '../common/img/notify.png',
 				       	sticky: false,
 				       	time: ''
@@ -218,7 +207,7 @@
    		});
 
    		notifications.initialize = function() {
-       		notifications.connect('ws://localhost:8080/liveauction/notify');
+       		notifications.connect(WEBSOCKET_URL);
    		};
 
 		notifications.initialize();

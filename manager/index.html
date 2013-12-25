@@ -90,10 +90,8 @@ function updatestatus(auction) {
 $(document).ready(function() {
 	$.ajax({
 		type: 'GET',
-		url: URI('http://localhost:8080/liveauction/event').addQuery(PARAM_ACTION, ACTION_AUCTIONLIST),
+		url: URI(API_URL + '/event').addQuery(PARAM_ACTION, ACTION_AUCTIONLIST),
 		contentType: 'application/json; charset=utf-8',
-		dataType : 'jsonp',
-		jsonp : 'callback',
 		success: function (data) {
 			updatestatus(data.auctions[0]);
 		}
@@ -103,10 +101,8 @@ $(document).ready(function() {
 $('#start-btn').on('click', function (e) {
 	$.ajax({
 		type: 'GET',
-		url: URI('http://localhost:8080/liveauction/live').addQuery(PARAM_ACTION, ACTION_AUCTIONSTART).addQuery(PARAM_AUCTIONUID, '1'),
+		url: URI(API_URL + '/live').addQuery(PARAM_ACTION, ACTION_AUCTIONSTART).addQuery(PARAM_AUCTIONUID, '1'),
 		contentType: 'application/json; charset=utf-8',
-		dataType : 'jsonp',
-		jsonp : 'callback',
 		success: function (data) {
 			updatestatus(data.auction);
 		}
@@ -116,10 +112,8 @@ $('#start-btn').on('click', function (e) {
 $('#stop-btn').on('click', function (e) {
 	$.ajax({
 		type: 'GET',
-		url: URI('http://localhost:8080/liveauction/live').addQuery(PARAM_ACTION, ACTION_AUCTIONSTOP).addQuery(PARAM_AUCTIONUID, '1'),
+		url: URI(API_URL + '/live').addQuery(PARAM_ACTION, ACTION_AUCTIONSTOP).addQuery(PARAM_AUCTIONUID, '1'),
 		contentType: 'application/json; charset=utf-8',
-		dataType : 'jsonp',
-		jsonp : 'callback',
 		success: function (data) {
 			updatestatus(data.auction);
 		}

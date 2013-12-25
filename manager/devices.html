@@ -111,13 +111,12 @@ var grid = new Backgrid.Grid({
 $("#item-results").append(grid.render().$el);
 
 var Data = Backbone.Model.extend({
-  url: URI("http://localhost:8080/liveauction/auth").addQuery(PARAM_ACTION, ACTION_DEVICELIST).addQuery(PARAM_AUCTIONUID, "1")
+  url: URI(API_URL + '/auth').addQuery(PARAM_ACTION, ACTION_DEVICELIST).addQuery(PARAM_AUCTIONUID, "1")
 });
 
 var data = new Data();
 
 data.fetch({
-	dataType: 'jsonp',
 	success: function (data) {
 		devices.add(data.get("devices"));
 	}

@@ -12,8 +12,6 @@
 	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
 	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" type="text/css">
 
-	<link rel="icon" type="image/png" href="..common/img/favicon.png"/>
-
 	<style type="text/css">
 		#fundACauseSumSpan {
 			font-size: 48px;
@@ -25,12 +23,6 @@
 			font-size: 36px;
 			font-weight:bold;
 			text-align:center;
-		}
-		.logo {
-			float: left;
-			height: 16px;
-			padding: 2px 0 0 2px;
-			width: 16px;
 		}
 		.money {
 			color:#216C2A;
@@ -56,15 +48,10 @@
 			</div>
 		</div>
 	</div>
-	<hr>
-	<div id="footer">
-		<img src="../common/img/logo.png" class="logo"/><span>mobiaware.&copy; All Rights Reserved 2010</span>
-	</div>
 
 	<script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
 	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js" type="text/javascript"></script>
-
-	<script src="..//common/js/format.currency.js" type="text/javascript"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.3.2/accounting.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
    		var notifications = {};
@@ -94,14 +81,14 @@
 				var data = json['liveauction-fund'];
 
 				if (data) {
-					$('#fundACauseSumSpan').text(numberToCurrency(data.sum));
+					$('#fundACauseSumSpan').text(accounting.formatMoney(data.sum));
 					$('#fundACauseLastSpan').text('Thanks ' + data.user.firstName + '!');
 				}
        		};
    		});
 
    		notifications.initialize = function() {
-       		notifications.connect('ws://localhost:8080/liveauction/notify');
+       		notifications.connect(WEBSOCKET_URL);
    		};
 
 		notifications.initialize();
