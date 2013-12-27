@@ -1,5 +1,18 @@
-.bs-docs-home,
-.bs-header {
-  color: #cdbfe3;
+body {
+  margin-top: 50px;
+  /*color: #cdbfe3;*/
   background-color: #563d7c;
+}
+
+#wrapper {
+  padding-left: 0;
+}
+
+#page-wrapper {
+  width: 100%;
+  padding: 5px 15px;
+}
+
+.backgrid th {
+  display: none;
 }
