@@ -15,6 +15,13 @@
 <link href="../common/lib/gritter/jquery.gritter.css" rel="stylesheet" type="text/css">
 
 <style type="text/css">
+	#fundACauseSumSpan {
+		text-align:center;
+		color:#216C2A;
+	}
+	#fundACauseLastSpan {
+		text-align:center;
+	}
 	.money {
 		color:#216C2A;
 	}
@@ -26,6 +33,14 @@
         	<h1>Event Name</h1>
         	<p>Why are we here?</p>
       	</div>
+		<div class="container">
+			<div class="panel panel-default">
+				<center>
+        			<h3><span id="fundACauseSumSpan"></span></h3>
+        			<p><span id="fundACauseLastSpan"></span></p>	
+				</center>	
+			</div>
+		</div>
 	</div>
 	<div class="container">
 		<div class="row">
@@ -150,16 +165,23 @@
        		notifications.socket.onmessage = function (message) {
 				var json = $.parseJSON(message.data);
 				
-				var data = json['liveauction-item'];
+				var dataItem = json['liveauction-item'];
 
-				if (data) {
+				if (dataItem) {
 					$.gritter.add({
-						title: 'Item #' + data.item.itemNumber,
-				        text: 'Bid price: ' + accounting.formatMoney(data.item.curPrice) + ' Total bids: ' + data.item.bidCount,
+						title: 'Item #' + dataItem.item.itemNumber,
+				        text: 'Bid price: ' + accounting.formatMoney(dataItem.item.curPrice) + ' Total bids: ' + dataItem.item.bidCount,
 				       	image: '../common/img/notify.png',
 				       	sticky: false,
 				       	time: ''
 					});
+				}
+				
+				var dataFund = json['liveauction-fund'];
+
+				if (dataFund) {
+					$('#fundACauseSumSpan').text(accounting.formatMoney(dataFund.sum));
+					$('#fundACauseLastSpan').text('Thanks ' + dataFund.user.firstName + '!');
 				}
        		};
    		});

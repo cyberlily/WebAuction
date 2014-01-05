@@ -1,7 +1,7 @@
 body {
   margin-top: 50px;
   /*color: #cdbfe3;*/
-  background-color: #563d7c;
+  /*background-color: #563d7c;*/
 }
 
 #wrapper {
@@ -16,3 +16,12 @@ body {
 .backgrid th {
   display: none;
 }
+
+
+
+.money {
+	color:#216C2A;
+}
+
+
+
